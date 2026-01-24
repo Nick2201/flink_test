@@ -29,6 +29,7 @@ services:
         while [ 1 -eq 1 ];do sleep 60;done
 
   sql-client:
+    container_name: ${FLINK_SQL}
     build: .
     command: bin/sql-client.sh
     depends_on:
@@ -38,6 +39,8 @@ services:
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
         rest.address: jobmanager
+    volumes:
+      - sql_scripts:/opt/flink/sql_scripts:ro
 
   jobmanager:
     build: .
@@ -56,6 +59,7 @@ services:
         heartbeat.timeout: 5000
         rest.flamegraph.enabled: true
         web.backpressure.refresh-interval: 10000
+        rest.profiling.enabled: true
 
   taskmanager:
     build: .
@@ -68,11 +72,23 @@ services:
       - |
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
-        taskmanager.numberOfTaskSlots: 3
+        taskmanager.numberOfTaskSlots: 5
         state.backend: hashmap
         state.checkpoints.dir: file:///tmp/flink-checkpoints
         heartbeat.interval: 1000
         heartbeat.timeout: 5000
+  kafka-ui:
+    image: obsidiandynamics/kafdrop
+    platform: linux/amd64
+    container_name: kafka_ui
+    depends_on:  
+      - broker  
+    ports:  
+      - "9000:9000"  
+    environment:  
+      KAFKA_BROKERCONNECT: broker:9092  
+      SERVER_SERVLET_CONTEXTPATH: "/"
 
 volumes:
   flink_data:
+  sql_scripts:
