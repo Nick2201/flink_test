@@ -4,4 +4,4 @@
 	1. You need to set the config `rest.profiling.enabled: true` to enable this experimental profiler feature.
 2. [ ]: `Failed to request Flink Gateway 
     fecth failed`
-3. [ ]: 
+3. [ ]: Python app
