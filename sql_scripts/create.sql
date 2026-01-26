@@ -43,3 +43,21 @@ WITH (
   'fields.name.expression' = '#{harry_potter.name}',
   'fields.ts.expression' =  '#{date.past ''5'',''1'',''SECONDS''}'
 );
+
+
+CREATE TABLE stock_candles (
+  `ticker` STRING,
+  `open` DOUBLE,
+  `close` DOUBLE,
+  `max` DOUBLE,
+  `min` DOUBLE,
+  `timestamp` TIMESTAMP
+) WITH (
+  'connector' = 'faker', 
+  'fields.ticker.expression' = '#{Options.option ''AAPL'',''GOOGL'',''MSFT'',''SPY''}',
+  'fields.open.expression' = '#{number.randomDouble ''2'',''50'',''500''}',
+  'fields.close.expression' = '#{number.randomDouble ''2'',''50'',''500''}',
+  'fields.max.expression' = '#{number.randomDouble ''2'',''50'',''500''}',
+  'fields.min.expression' = '#{number.randomDouble ''2'',''50'',''500''}',
+  'fields.timestamp.expression' = '#{date.past ''15'',''SECONDS''}'
+);
