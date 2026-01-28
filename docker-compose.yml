@@ -31,18 +31,6 @@ services:
         apk add jq;
         while [ 1 -eq 1 ];do sleep 60;done
 
- 
-  streamlit-app:
-    build:
-      context: .
-      dockerfile: Dockerfile.python
-    ports:
-      - "8501:8501"
-    volumes:
-      - .:/app
-    environment:
-      - STREAMLIT_SERVER_PORT=8501
-
   sql-client:
     container_name: ${FLINK_SQL}
     build:
@@ -64,7 +52,7 @@ services:
       context: .
       dockerfile: Dockerfile.flink 
     ports:
-      - "127.0.0.1:8081:8081"  
+      - ${JOBMANAGER_PORT}  
     command: jobmanager
     volumes:
       - flink_data:/tmp/
@@ -106,7 +94,7 @@ services:
     depends_on:  
       - broker  
     ports:  
-      - "9000:9000"  
+      - ${KAFKAUI_PORT}  
     environment:  
       KAFKA_BROKERCONNECT: broker:9092  
       SERVER_SERVLET_CONTEXTPATH: "/"
