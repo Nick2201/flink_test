@@ -1,10 +1,10 @@
 # Apache Flink test
 
 ## Launch
-- ```app_up```: launc app untill down
+- ```make app_up```: launc app untill down
 - ```make sql```: create new sql session
-- ```job```: dive into job_maneger file-system
-- ```app_down```:  run down: 
+- ```make job```: dive into job_maneger file-system
+- ```make app_down```:  run down: 
 
 
 ## Tables
