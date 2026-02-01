@@ -71,14 +71,13 @@ CREATE TABLE Orders (
     amount DECIMAL(10, 2),
     order_time TIMESTAMP(3),
     proc_time AS PROCTIME(),
-    WATERMARK FOR order_time AS order_time - INTERVAL '30' SECONDS
+    WATERMARK FOR order_time AS order_time - INTERVAL '30' SECONDS~
 ) WITH (
     'connector' = 'faker',
     'rows-per-second' = '8',
     'fields.order_id.expression' = '#{Internet.uuid}',
     'fields.user_id.expression' = '#{number.numberBetween ''1000'',''10000''}',
-    'fields.amount.expression' = '#{number.randomDouble ''2'',''10'',''5000''}',
-    'fields.order_time.expression' = '#{date.past ''20'',''SECONDS''}'
+'fields.amount.expression' = '#{number.randomDouble ''2'',''10'',''5000''}',    'fields.order_time.expression' = '#{date.past ''20'',''SECONDS''}'
 );
 -- RatesHistory
 CREATE TABLE RatesHistory (
@@ -87,12 +86,12 @@ CREATE TABLE RatesHistory (
     valid_from TIMESTAMP(3),
     valid_to TIMESTAMP(3),
     PRIMARY KEY (currency) NOT ENFORCED,
-    WATERMARK FOR valid_to AS valid_to - INTERVAL '1' DAY
-) WITH (
+    WATERMARK FOR valid_from AS valid_from - INTERVAL '1' SECOND) 
+    WITH (
     'connector' = 'faker',
     'rows-per-second' = '1',
     'fields.currency.expression' = '#{Options.option ''USD'',''EUR'',''GBP'',''JPY'',''CHF''}',
-    'fields.rate.expression' = '#{number.randomDouble ''4'',''0.5'',''1.5''}',
+    'fields.rate.expression' = '#{number.randomDouble ''4'',''50'',''150''}',
     'fields.valid_from.expression' = '#{date.past ''30'',''DAYS''}',
     'fields.valid_to.expression' = '#{date.future ''30'',''DAYS''}'
 );
