@@ -9,3 +9,5 @@ app_down:
 ## pure restart
 app_up:
 	docker compose up --build -d
+app_down:
+	docker compose down -v
