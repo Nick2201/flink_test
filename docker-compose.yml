@@ -34,8 +34,8 @@ services:
   sql-client:
     container_name: ${FLINK_SQL}
     build:
-      context: .
-      dockerfile: Dockerfile.flink  
+      context: ./pyflink
+      dockerfile: Dockerfile 
     command: bin/sql-client.sh
     depends_on:
       - jobmanager
@@ -49,8 +49,8 @@ services:
 
   jobmanager:
     build:
-      context: .
-      dockerfile: Dockerfile.flink 
+      context: ./pyflink
+      dockerfile: Dockerfile
     ports:
       - ${JOBMANAGER_PORT}  
     command: jobmanager
@@ -70,8 +70,8 @@ services:
 
   taskmanager:
     build:
-      context: .
-      dockerfile: Dockerfile.flink 
+      context: ./pyflink
+      dockerfile: Dockerfile
     depends_on:
       - jobmanager
     command: taskmanager
@@ -98,6 +98,14 @@ services:
     environment:  
       KAFKA_BROKERCONNECT: broker:9092  
       SERVER_SERVLET_CONTEXTPATH: "/"
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: flinkuser
+      POSTGRES_PASSWORD: flinkpassword
+      POSTGRES_DB: flinkdb
+    ports:
+      - "5432:5432"
 
 volumes:
   flink_data:
